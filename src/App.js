@@ -1,19 +1,20 @@
 import React, { Component } from 'react'
+import { HashRouter, Route, Switch } from 'react-router-dom'
 import { Grid } from 'react-bootstrap'
-// import logo from './logo.svg'
+
+import Cover from './Cover'
+import NotFound from './NotFound'
 
 class App extends Component {
   render() {
     return (
       <Grid fluid={true}>
-        <header className="App-header">
-          {/* <img src={logo} className="App-logo" alt="logo" /> */}
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <HashRouter hashType="hashbang">
+          <Switch>
+            <Route exact path="/" component={Cover} />
+            <Route component={NotFound} />
+          </Switch>
+        </HashRouter>
       </Grid>
     )
   }
