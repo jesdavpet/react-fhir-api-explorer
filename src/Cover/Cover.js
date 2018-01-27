@@ -3,7 +3,9 @@ import { Grid } from 'react-bootstrap'
 
 class Cover extends Component {
   render() {
-    return (<h1>Hello World!</h1>)
+    return <Grid>
+      <h1>Hello World!</h1>
+    </Grid>
   }
 }
 
