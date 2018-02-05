@@ -1,4 +1,4 @@
-import conformance from './conformance'
-import patient from './patient'
+import Metadata from './Metadata'
+import Patient from './Patient'
 
-export default {conformance, patient}
+export default {Metadata, Patient}

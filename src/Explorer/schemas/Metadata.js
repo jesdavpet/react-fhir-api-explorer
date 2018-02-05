@@ -1,5 +1,5 @@
 import {createLabeledDefaultedProperties} from './schemaCustomizer'
-
+import {disableListedProperties, initializeUsingSchema} from './uiSchemaCustomizer'
 import METHOD from './METHOD'
 import _FORMAT from './_FORMAT'
 const QUERY_PARAMETERS = {}
@@ -9,7 +9,7 @@ const schema = {
   type: `object`,
   required: [`url`, `method`],
   properties: {
-    url: { type: `string`, default: `https://fhirtest.uhn.ca/baseDstu3/metadata` },
+    url: { type: `string`, default: `https://hapi.fhir.org/baseDstu3/metadata` },
     method: {
       type: `string`,
       enum: [METHOD.GET],
@@ -28,6 +28,10 @@ const schema = {
 
 const uiSchema = {
   url: {'ui:disabled': true},
+  query: disableListedProperties(
+    [`_format`],
+    initializeUsingSchema(schema.properties.query.properties)
+  ),
   method: {'ui:widget': `radio`, 'ui:options': {inline: true}},
 }
 

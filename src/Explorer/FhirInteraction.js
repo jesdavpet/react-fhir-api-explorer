@@ -4,7 +4,7 @@ import { Grid, Row, Col } from 'react-bootstrap'
 import FhirRequest from './FhirRequest'
 import FhirResponse from './FhirResponse'
 
-export default class Explorer extends Component {
+export default class FhirInteraction extends Component {
   render () {
     return <Grid>
       <Row>
@@ -13,7 +13,7 @@ export default class Explorer extends Component {
         </Col>
 
         <Col xs={6}>
-          <FhirResponse response={{status: 0, data: ``}} />
+          <FhirResponse response={{status: 321, data: `{"Wow": "So Doge"}`}} />
         </Col>
       </Row>
     </Grid>

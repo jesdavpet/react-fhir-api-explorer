@@ -15,7 +15,7 @@ export default class FhirResponse extends Component {
             </Label>
           </h4>
 
-          <pre>{JSON.stringify(data, null, 2) || `N/A`}</pre>
+          <pre>{JSON.stringify(JSON.parse(data), null, 2) || `N/A`}</pre>
         </div>
   }
 }

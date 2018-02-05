@@ -1,23 +1,15 @@
 import React, {Component} from 'react'
 import Form from 'react-jsonschema-form'
-import {map} from 'ramda'
 
 import FhirQueryParameter from './FhirQueryParameter'
+import {widgetizeAllProperties} from './schemas/uiSchemaCustomizer'
 
+const widgetizeQuery = widgetizeAllProperties(FhirQueryParameter)
 export default class FhirRequest extends Component {
   render () {
-    const widgetQueryProperties = {...map(
-      (p) => {
-        p["ui:widget"] = FhirQueryParameter
-        p["ui:options"] = {label: false}
-        return p
-      },
-      this.props.schema.properties.query.properties
-    )}
-
     const formattedUiSchema = {
       ...this.props.uiSchema,
-      query: widgetQueryProperties
+      query: widgetizeQuery(this.props.uiSchema.query) 
     }
 
     const alteredProps = {
@@ -26,6 +18,14 @@ export default class FhirRequest extends Component {
     }
 
     const log = (type) => console.log.bind(console, type)
+
+    const naiiveRequest = (req) => {
+      const {url} = req.formData
+      fetch(url, req.formData)
+        .then(res => res.json())
+        .then(res => console.info(JSON.stringify(res, null, 2)))
+        .catch(console.warn)
+    }
 
     return <div>
       <style>{
@@ -38,7 +38,7 @@ export default class FhirRequest extends Component {
       }`}</style>
       <Form {...alteredProps}
             onChange={log("changed")}
-            onSubmit={log("submitted")}
+            onSubmit={naiiveRequest}
             onError={log("errors")} />
     </div>
   }

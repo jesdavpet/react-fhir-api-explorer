@@ -1,14 +1,14 @@
 import React, {Component} from 'react'
 
 import FhirInteraction from './FhirInteraction'
-import conformance from './schemas/conformance'
-import patient from './schemas/patient'
+import Metadata from './schemas/Metadata'
+import Patient from './schemas/Patient'
 
 export default class Explorer extends Component {
   render () {
     return <div>
-      <FhirInteraction {...conformance} />
-      <FhirInteraction {...patient} />
+      <FhirInteraction {...Metadata} />
+      <FhirInteraction {...Patient} />
     </div>
   }
 }
