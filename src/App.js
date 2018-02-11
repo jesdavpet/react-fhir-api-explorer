@@ -1,13 +1,13 @@
-import React, { Component } from 'react'
-import { HashRouter, Route, Switch } from 'react-router-dom'
-import { Grid } from 'react-bootstrap'
+import React, {Component} from 'react'
+import {HashRouter, Route, Switch} from 'react-router-dom'
+import {Grid} from 'react-bootstrap'
 
 import Cover from './Cover'
 import Explorer from './Explorer'
 import Aggregator from './Aggregator'
 import NotFound from './NotFound'
 
-class App extends Component {
+export default class App extends Component {
   render() {
     return (
       <Grid fluid={true}>
@@ -24,4 +24,3 @@ class App extends Component {
   }
 }
 
-export default App

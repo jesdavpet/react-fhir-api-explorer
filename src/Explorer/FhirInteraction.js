@@ -19,3 +19,4 @@ export default class FhirInteraction extends Component {
     </Grid>
   }
 }
+
