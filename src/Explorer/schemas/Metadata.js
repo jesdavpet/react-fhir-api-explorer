@@ -1,7 +1,11 @@
-import {createLabeledDefaultedProperties} from './schemaCustomizer'
-import {disableListedProperties, initializeUsingSchema} from './uiSchemaCustomizer'
+import {createLabeledDefaultedProperties} from './schemaCustomizer.services'
+import {
+  disableListedProperties,
+  initializeUsingSchema
+} from './uiSchemaCustomizer.services'
 import METHOD from './METHOD'
 import _FORMAT from './_FORMAT'
+
 const QUERY_PARAMETERS = {}
 
 const schema = {

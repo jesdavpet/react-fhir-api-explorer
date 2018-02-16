@@ -6,23 +6,25 @@ import InteractionSelector from './InteractionSelector'
 
 export default class Explorer extends Component {
   render () {
-    console.log(this.props.explorer)
     return <div>
       {this.props.explorer.map((interaction, i) =>
         <Panel key={i} defaultExpanded>
           <Panel.Heading>
             {interaction.schema.title}
             <Button
-            bsSize="small"
-            bsStyle="danger"
-            onClick={this.props.deleteInteraction.bind(null, i)}
+              bsSize="small"
+              bsStyle="danger"
+              onClick={this.props.deleteInteraction.bind(null, i)}
             >
               <Glyphicon glyph="trash" />
             </Button>
           </Panel.Heading>
 
           <Panel.Body>
-            <FhirInteraction {...interaction} />
+            <FhirInteraction
+              {...interaction}
+              onSubmit={this.props.fetchFhirInto(i)}
+            />
           </Panel.Body>
         </Panel>
       )}
