@@ -3,7 +3,6 @@ import { Label } from 'react-bootstrap'
 
 export default class FhirResponse extends Component {
   render () {
-    console.log(this.props)
     const { status, data } = this.props.response
     return (!status && !data)
       ? <div>...</div>

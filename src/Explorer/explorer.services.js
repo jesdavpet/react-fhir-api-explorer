@@ -14,8 +14,15 @@ const getSafeOptions = ifElse(
   pick(NON_GET_PROPERTIES)
 )
 
-/** Fetches a FHIR request. @param {Object} request @returns {Promise} */
-export const fetchFhir = request =>
-  fetch(request.formData.url, getSafeOptions(request.formData))
-    .then(response => response)
+/** Fetches a FHIR request. @param {Object} @returns {Promise} @throws */
+export const fetchFhir = async (request) => {
+  const response = await fetch(
+    request.formData.url,
+    getSafeOptions(request.formData)
+  )
+  const {status} = response
+  const data = await response.json()
+
+  return {status, data}
+}
 

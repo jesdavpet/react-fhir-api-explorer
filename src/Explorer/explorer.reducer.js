@@ -26,11 +26,15 @@ export const updateInteractionResponse = (response, index) => ({
 })
 
 /* Thunk dispatches action asynchrnonously. */
-export const fetchFhirInto = index => dispatch => request =>
-  fetchFhir(request)
-  .then(response => dispatch(updateInteractionResponse(response, index)))
-  .catch(error => console.warn(`Oh no ... something went wrong!`))
-
+export const fetchFhirInto = (index) => (dispatch) => async (request) => {
+  try {
+    const response = await fetchFhir(request)
+    dispatch(updateInteractionResponse(response, index))
+  } catch (error) {
+    // TODO: Handle errors like a grown-up.
+    console.warn(`Oh no ... something went wrong!`)
+  }
+}
 /* Reducer for explorer state management. */
 export default function (state, {type, payload}) {
   const INITIAL_STATE = {explorer: []}
@@ -52,8 +56,6 @@ export default function (state, {type, payload}) {
       }
 
     case EXPLORER_UPDATE_INTERACTION_RESPONSE:
-      console.info(`I thunk a thought!`)
-      console.info(payload)
       return (payload.index >= 0 && payload.index < state.explorer.length)
         ? {
             ...state,
