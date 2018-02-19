@@ -5,6 +5,7 @@
   "private": true,
   "author": "Jesse David Peterson <@jesdavpet>  (http://www.jes.dav.pet)",
   "dependencies": {
+    "history": "^4.7.2",
     "react": "^16.2.0",
     "react-bootstrap": "^0.32.0",
     "react-dom": "^16.2.0",
@@ -14,6 +15,8 @@
     "react-scripts": "1.1.0",
     "redux": "^3.7.2",
     "redux-devtools-extension": "^2.13.2",
+    "redux-first-router": "0.0.16-next",
+    "redux-first-router-link": "^1.4.2",
     "redux-thunk": "^2.2.0"
   },
   "scripts": {

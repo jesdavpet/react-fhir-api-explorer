@@ -44,16 +44,16 @@ describe(`Explorer reducer`, () => {
       const result = reduce(undefined, unhandledActionType)
 
       expect(result).toBeDefined()
-      expect(result).toEqual({explorer: []})
+      expect(result).toEqual([])
     })
   })
 
   describe(`EXPLORER_ADD_INTERACTION`, () => {
     test(`should add a FHIR interaction to explorer`, () => {
-      const initial = {explorer: []}
+      const initial = []
       const interactionToAdd = {hi: `mom`}
 
-      const expected = {explorer: [interactionToAdd]}
+      const expected = [interactionToAdd]
       const result = reduce(initial, addInteraction(interactionToAdd))
 
       expect(result).toEqual(expected)
@@ -62,9 +62,9 @@ describe(`Explorer reducer`, () => {
 
   describe(`EXPLORER_DELETE_INTERACTION`, () => {
     test(`should delete indexed FHIR interaction from explorer`, () => {
-      const initial = {explorer: [{zero: 0}, {one: 1}, {two: 2}]}
+      const initial = [{zero: 0}, {one: 1}, {two: 2}]
 
-      const expected = {explorer: [{zero: 0}, {two: 2}]}
+      const expected = [{zero: 0}, {two: 2}]
       const result = reduce(initial, deleteInteraction(1))
 
       expect(result).toEqual(expected)
@@ -73,19 +73,19 @@ describe(`Explorer reducer`, () => {
 
   describe(`EXPLORER_UPDATE_INTERACTION`, () => {
     test(`should update FHIR interaction from explorer by index`, () => {
-      const initial = {explorer: [{zero: 0}, {one: 1}, {two: 2}]}
+      const initial = [{zero: 0}, {one: 1}, {two: 2}]
 
       const interaction = {uno: 1}
       const index = 1
 
       const result = reduce(initial, updateInteraction(interaction, index))
-      const expected = {explorer: [{zero: 0}, {uno: 1}, {two: 2}]}
+      const expected = [{zero: 0}, {uno: 1}, {two: 2}]
 
       expect(result).toEqual(expected)
     })
 
     test(`should NOT update FHIR interaction when index invalid`, () => {
-      const initial = {explorer: [{zero: 0}, {one: 1}, {two: 2}]}
+      const initial = [{zero: 0}, {one: 1}, {two: 2}]
 
       const interaction = {fifty: 50}
       const index = 50
