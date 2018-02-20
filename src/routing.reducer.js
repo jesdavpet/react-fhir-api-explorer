@@ -9,12 +9,10 @@ export default (state = null, action = {}) => {
     case HOME:
     case AGGREGATOR:
     case EXPLORER:
-      console.info(`${action.type} -> ${action.type}`)
       return action.type
 
     case NOT_FOUND:
     default:
-      console.info(action.type)
       return state
   }
 }
