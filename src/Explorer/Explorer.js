@@ -6,7 +6,6 @@ import InteractionSelector from './InteractionSelector'
 
 export default class Explorer extends Component {
   render () {
-    console.info(this.props.explorer)
     return <div>
       {this.props.explorer.map((interaction, i) =>
         <Panel key={i} defaultExpanded>

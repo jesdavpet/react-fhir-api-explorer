@@ -7,7 +7,7 @@
   "dependencies": {
     "history": "^4.7.2",
     "react": "^16.2.0",
-    "react-bootstrap": "^0.32.0",
+    "react-bootstrap": "^0.32.1",
     "react-dom": "^16.2.0",
     "react-jsonschema-form": "^1.0.0",
     "react-redux": "^5.0.6",

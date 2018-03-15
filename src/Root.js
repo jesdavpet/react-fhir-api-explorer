@@ -8,6 +8,7 @@ import Cover from './Cover'
 import Explorer from './Explorer'
 import Aggregator from './Aggregator'
 import NotFound from './NotFound'
+import Navigation from './Navigation'
 
 const {HOME, AGGREGATOR, EXPLORER} = routeActions
 
@@ -15,9 +16,9 @@ class Root extends Component {
   render() {
     switch (this.props.routing) {
       case HOME: return <Cover />
-      case EXPLORER: return <Explorer />
-      case AGGREGATOR: return <Aggregator />
-      default: return <NotFound />
+      case EXPLORER: return <div><Navigation /><Explorer /></div>
+      case AGGREGATOR: return <div><Navigation /><Aggregator /></div>
+      default: return <div><Navigation /><NotFound /></div>
     }
   }
 }
