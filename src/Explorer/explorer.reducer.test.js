@@ -1,7 +1,9 @@
 import reduce, {
   addInteraction,
   deleteInteraction,
-  updateInteraction
+  updateInteraction,
+  updateInteractionResponse,
+  updateInteractionError
 } from './explorer.reducer'
 
 describe(`Explorer action creators`, () => {
@@ -96,5 +98,48 @@ describe(`Explorer reducer`, () => {
       expect(result).toEqual(expected)
     })
   })
-})
 
+  describe(`EXPLORER_UPDATE_INTERACTION_ERROR`, () => {
+    test(`should update the error of an indexed interaction`, () => {
+      const initial = [{hi: `mom`}]
+      const error = `Error: "yo mama" does not compute`
+
+      const expected = [{hi: `mom`, error}]
+      const result = reduce(initial, updateInteractionError(error, 0))
+
+      expect(result).toEqual(expected)
+    })
+
+    test(`should NOT alter state when indexed interaction is out of range`, () => {
+      const initial = [{hi: `mom`}]
+      const error = `Error: "yo mama" does not compute`
+
+      const expected = [{hi: `mom`, error}]
+      const result = reduce(initial, updateInteractionError(error, 1000000))
+
+      expect(result).toEqual(initial)
+    })
+  })
+
+  describe(`EXPLORER_UPDATE_INTERACTION_RESPONSE`, () => {
+    test(`should update the response of an indexed interaction`, () => {
+      const initial = [{hi: `mom`}]
+      const response = {statusCode: 200, body: `Wow`}
+
+      const expected = [{hi: `mom`, response}]
+      const result = reduce(initial, updateInteractionResponse(response, 0))
+
+      expect(result).toEqual(expected)
+    })
+
+    test(`should NOT alter state when indexed interaction is out of range`, () => {
+      const initial = [{hi: `mom`}]
+      const response = {statusCode: 200, body: `Wow`}
+
+      const expected = [{hi: `mom`, response}]
+      const result = reduce(initial, updateInteractionResponse(response, 1000000))
+
+      expect(result).toEqual(initial)
+    })
+  })
+})
