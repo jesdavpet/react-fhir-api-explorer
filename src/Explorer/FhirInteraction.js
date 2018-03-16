@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Grid, Row, Col } from 'react-bootstrap'
+import { Alert, Col, Grid, Row } from 'react-bootstrap'
 
 import FhirRequest from './FhirRequest'
 import FhirResponse from './FhirResponse'
@@ -13,9 +13,17 @@ export default class FhirInteraction extends Component {
           <FhirRequest {...this.props} onSubmit={this.props.onSubmit}/>
         </Col>
 
-        <Col xs={12}>
-          <FhirResponse response={this.props.response || this.EMPTY_RESPONSE} />
-        </Col>
+        {
+          this.props.error
+          ? <Col xs={12}>
+              <Alert bsStyle="danger">{this.props.error}</Alert>
+            </Col>
+          : this.props.response
+          ? <Col xs={12}>
+              <FhirResponse response={this.props.response || this.EMPTY_RESPONSE} />
+            </Col>
+          : null
+        }
       </Row>
     </Grid>
   }

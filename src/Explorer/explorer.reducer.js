@@ -25,16 +25,23 @@ export const updateInteractionResponse = (response, index) => ({
   payload: {response, index}
 })
 
+export const EXPLORER_UPDATE_INTERACTION_ERROR = `EXPLORER_UPDATE_INTERACTION_ERROR`
+export const updateInteractionError = (error, index) => ({
+  type: EXPLORER_UPDATE_INTERACTION_ERROR,
+  payload: {error, index}
+})
+
 /* Thunk dispatches action asynchrnonously. */
 export const fetchFhirInto = (index) => (dispatch) => async (request) => {
   try {
     const response = await fetchFhir(request)
     dispatch(updateInteractionResponse(response, index))
   } catch (error) {
-    // TODO: Handle errors like a grown-up.
-    console.warn(`Oh no ... something went wrong!`)
+    const message = `ERROR: Please check your network connection.`
+    dispatch(updateInteractionError(message, index))
   }
 }
+
 /* Reducer for explorer state management. */
 export default function (state, {type, payload}) {
   const INITIAL_STATE = []
@@ -49,26 +56,34 @@ export default function (state, {type, payload}) {
         ...state.slice(payload + 1)
       ]
 
-    case EXPLORER_UPDATE_INTERACTION_RESPONSE:
-      return (payload.index >= 0 && payload.index < state.length)
-        ? [
-            ...state.slice(0, payload.index),
-            {...state[payload.index], response: payload.response},
-            ...state.slice(payload.index + 1)
-          ]
-        : state
-
     case EXPLORER_UPDATE_INTERACTION:
       return (payload.index >= 0 && payload.index < state.length)
-        ? [
-            ...state.slice(0, payload.index),
-            payload.interaction,
-            ...state.slice(payload.index + 1)
-          ]
-        : state
+      ? [
+          ...state.slice(0, payload.index),
+          payload.interaction,
+          ...state.slice(payload.index + 1)
+        ]
+      : state
+
+    case EXPLORER_UPDATE_INTERACTION_ERROR:
+      return (payload.index >= 0 && payload.index < state.length)
+      ? [
+          ...state.slice(0, payload.index),
+          {...state[payload.index], error: payload.error},
+          ...state.slice(payload.index + 1)
+        ]
+      : state
+
+    case EXPLORER_UPDATE_INTERACTION_RESPONSE:
+      return (payload.index >= 0 && payload.index < state.length)
+      ? [
+          ...state.slice(0, payload.index),
+          {...state[payload.index], response: payload.response},
+          ...state.slice(payload.index + 1)
+        ]
+      : state
 
     default:
       return (!state) ? INITIAL_STATE : state
   }
 }
-
