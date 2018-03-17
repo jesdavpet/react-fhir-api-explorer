@@ -2,8 +2,10 @@ import reduce, {
   addInteraction,
   deleteInteraction,
   updateInteraction,
+  updateInteractionError,
   updateInteractionResponse,
-  updateInteractionError
+  deleteInteractionError,
+  deleteInteractionResponse
 } from './explorer.reducer'
 
 describe(`Explorer action creators`, () => {
@@ -102,7 +104,7 @@ describe(`Explorer reducer`, () => {
   describe(`EXPLORER_UPDATE_INTERACTION_ERROR`, () => {
     test(`should update the error of an indexed interaction`, () => {
       const initial = [{hi: `mom`}]
-      const error = `Error: "yo mama" does not compute`
+      const error = `Error: "yo mama" does not compute!`
 
       const expected = [{hi: `mom`, error}]
       const result = reduce(initial, updateInteractionError(error, 0))
@@ -112,7 +114,7 @@ describe(`Explorer reducer`, () => {
 
     test(`should NOT alter state when indexed interaction is out of range`, () => {
       const initial = [{hi: `mom`}]
-      const error = `Error: "yo mama" does not compute`
+      const error = `Error: "yo mama" does not compute!`
 
       const expected = [{hi: `mom`, error}]
       const result = reduce(initial, updateInteractionError(error, 1000000))
@@ -139,6 +141,70 @@ describe(`Explorer reducer`, () => {
       const expected = [{hi: `mom`, response}]
       const result = reduce(initial, updateInteractionResponse(response, 1000000))
 
+      expect(result).toEqual(initial)
+    })
+  })
+
+  describe(`EXPLORER_DELETE_INTERACTION_ERROR`, () => {
+    test(`should delete the error of an indexed interaction`, () => {
+      const initial = [{hi: `mom`, error: `Error: "yo mama" does not compute!`}]
+
+      const expected = [{hi: `mom`}]
+      const result = reduce(initial, deleteInteractionError(0))
+
+      expect(result).toEqual(expected)
+    })
+
+    test(`should NOT alter state when indexed interaction is out of range`, () => {
+      const initial = [{hi: `mom`, error: `Error: "yo mama" does not compute!`}]
+
+      const result = reduce(initial, deleteInteractionError(1000000))
+
+      expect(result).toEqual(initial)
+    })
+
+    test(`should NOT throw when error property doesn't exist`, () => {
+      const initial = [{hi: `mom`}]
+
+      const deleteNonExistantError = () => reduce(initial, deleteInteractionError(0))
+      expect(deleteNonExistantError).not.toThrow()
+    })
+
+    test(`should NOT throw when error property doesn't exist`, () => {
+      const initial = [{hi: `mom`}]
+      const result = reduce(initial, deleteInteractionError(0))
+      expect(result).toEqual(initial)
+    })
+  })
+
+  describe(`EXPLORER_DELETE_INTERACTION_RESPONSE`, () => {
+    test(`should delete the response of an indexed interaction`, () => {
+      const initial = [{hi: `mom`, response: {statusCode: 200, body: `Wow`}}]
+
+      const expected = [{hi: `mom`}]
+      const result = reduce(initial, deleteInteractionResponse(0))
+
+      expect(result).toEqual(expected)
+    })
+
+    test(`should NOT alter state when indexed interaction is out of range`, () => {
+      const initial = [{hi: `mom`, response: {statusCode: 200, body: `Wow`}}]
+
+      const result = reduce(initial, deleteInteractionResponse(1000000))
+
+      expect(result).toEqual(initial)
+    })
+
+    test(`should NOT throw when response property doesn't exist`, () => {
+      const initial = [{hi: `mom`}]
+      const deleteNonExistantResponse = () => reduce(initial, deleteInteractionResponse(0))
+      expect(deleteNonExistantResponse).not.toThrow()
+    })
+
+    test(`should NOT alter state when response property doesn't exist`, () => {
+      const initial = [{hi: `mom`}]
+
+      const result = reduce(initial, deleteInteractionResponse(0))
       expect(result).toEqual(initial)
     })
   })
