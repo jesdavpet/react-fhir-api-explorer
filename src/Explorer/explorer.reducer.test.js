@@ -5,7 +5,8 @@ import reduce, {
   updateInteractionError,
   updateInteractionResponse,
   deleteInteractionError,
-  deleteInteractionResponse
+  deleteInteractionResponse,
+  setInteractionIsLoading
 } from './explorer.reducer'
 
 describe(`Explorer action creators`, () => {
@@ -206,6 +207,17 @@ describe(`Explorer reducer`, () => {
 
       const result = reduce(initial, deleteInteractionResponse(0))
       expect(result).toEqual(initial)
+    })
+  })
+
+  describe(`EXPLORER_SET_INTERACTION_IS_LOADING`, () => {
+    test(`should set isoading for an indexed interaction`, () => {
+      const initial = [{hi: `mom`}]
+
+      const expected = [{hi: `mom`, isLoading: true}]
+      const result = reduce(initial, setInteractionIsLoading(0, true))
+
+      expect(result).toEqual(expected)
     })
   })
 })

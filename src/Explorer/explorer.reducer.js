@@ -1,4 +1,4 @@
-import {dissoc} from 'ramda'
+import {assoc, dissoc} from 'ramda'
 
 import {fetchFhir} from './explorer.services'
 
@@ -45,13 +45,25 @@ export const deleteInteractionResponse = (index) => ({
   payload: {index}
 })
 
+export const EXPLORER_SET_INTERACTION_IS_LOADING = `EXPLORER_SET_INTERACTION_IS_LOADING`
+export const setInteractionIsLoading = (index, isLoading = false) => ({
+  type: EXPLORER_SET_INTERACTION_IS_LOADING,
+  payload: {index, isLoading}
+})
+
 /* Thunk dispatches action asynchrnonously. */
 export const fetchFhirInto = (index) => (dispatch) => async (request) => {
+  dispatch(deleteInteractionResponse(index))
+  dispatch(deleteInteractionError(index))
+  dispatch(setInteractionIsLoading(index, true))
+
   try {
     const response = await fetchFhir(request)
+    dispatch(setInteractionIsLoading(index, false))
     dispatch(updateInteractionResponse(response, index))
   } catch (error) {
     const message = `ERROR: Please check your network connection.`
+    dispatch(setInteractionIsLoading(index, false))
     dispatch(updateInteractionError(message, index))
   }
 }
@@ -116,6 +128,15 @@ export default function (state, {type, payload}) {
           dissoc(`response`, state[payload.index]),
           ...state.slice(payload.index + 1)
         ]
+      : state
+
+    case EXPLORER_SET_INTERACTION_IS_LOADING:
+      return isIndexInRange(payload.index)
+      ? [
+        ...state.slice(0, payload.index),
+        assoc(`isLoading`, payload.isLoading, state[payload.index]),
+        ...state.slice(payload.index + 1)
+      ]
       : state
 
     default:
