@@ -1,4 +1,4 @@
-import {assoc, dissoc} from 'ramda'
+import {adjust, assoc, dissoc, remove, update} from 'ramda'
 
 import {fetchFhir} from './explorer.services'
 
@@ -73,73 +73,32 @@ export const fetchFhirInto = (index) => (dispatch) => async (request) => {
 export default function (state, {type, payload}) {
   const INITIAL_STATE = []
 
-  const isIndexInRange = (index = -1) => (index >= 0 && index < state.length)
-
   switch (type) {
     case EXPLORER_ADD_INTERACTION:
       return state.concat(payload)
 
     case EXPLORER_DELETE_INTERACTION:
-      return [
-        ...state.slice(0, payload),
-        ...state.slice(payload + 1)
-      ]
+      return remove(payload, 1, state)
 
     case EXPLORER_UPDATE_INTERACTION:
-      return isIndexInRange(payload.index)
-      ? [
-          ...state.slice(0, payload.index),
-          payload.interaction,
-          ...state.slice(payload.index + 1)
-        ]
-      : state
+      return update(payload.index, payload.interaction, state)
 
     case EXPLORER_UPDATE_INTERACTION_ERROR:
-      return isIndexInRange(payload.index)
-      ? [
-          ...state.slice(0, payload.index),
-          {...state[payload.index], error: payload.error},
-          ...state.slice(payload.index + 1)
-        ]
-      : state
+      return adjust(assoc(`error`, payload.error), payload.index, state)
 
     case EXPLORER_UPDATE_INTERACTION_RESPONSE:
-      return isIndexInRange(payload.index)
-      ? [
-          ...state.slice(0, payload.index),
-          {...state[payload.index], response: payload.response},
-          ...state.slice(payload.index + 1)
-        ]
-      : state
+      return adjust(assoc(`response`, payload.response), payload.index, state)
 
     case EXPLORER_DELETE_INTERACTION_ERROR:
-      return isIndexInRange(payload.index)
-      ? [
-          ...state.slice(0, payload.index),
-          dissoc(`error`, state[payload.index]),
-          ...state.slice(payload.index + 1)
-        ]
-      : state
+      return adjust(dissoc(`error`), payload.index, state)
 
     case EXPLORER_DELETE_INTERACTION_RESPONSE:
-      return isIndexInRange(payload.index)
-      ? [
-          ...state.slice(0, payload.index),
-          dissoc(`response`, state[payload.index]),
-          ...state.slice(payload.index + 1)
-        ]
-      : state
+      return adjust(dissoc(`response`), payload.index, state)
 
     case EXPLORER_SET_INTERACTION_IS_LOADING:
-      return isIndexInRange(payload.index)
-      ? [
-        ...state.slice(0, payload.index),
-        assoc(`isLoading`, payload.isLoading, state[payload.index]),
-        ...state.slice(payload.index + 1)
-      ]
-      : state
+      return adjust(assoc(`isLoading`, payload.isLoading), payload.index, state)
 
     default:
-      return (!state) ? INITIAL_STATE : state
+      return !state ? INITIAL_STATE : state
   }
 }
